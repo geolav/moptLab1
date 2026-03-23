@@ -2,7 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from dataclasses import dataclass, field
 
-
 # f1 = TODO
 # f1.__name__ = "<function in string view>" TODO
 # f2 = TODO
