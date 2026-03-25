@@ -160,8 +160,27 @@ def plot_iters_evals(results_list, method_name, func_name):
     plt.tight_layout()
     plt.show()
 
-# def plot_interval_dynamics(results, method_name, func_name):
-#     for res in results
+def plot_interval_dynamics(results_list, method_names, func_name):
+    plt.figure(figsize=(12, 6))
+    for i, results in enumerate(results_list):
+        plt.subplot(1, len(results_list), i + 1)
+        for j, res in enumerate(results):
+            if j % 2 == 0:
+                history = res['history']
+                if not history:
+                    continue
+                a_vals = [h[0] for h in history]
+                b_vals = [h[1] for h in history]
+                plt.plot(range(len(history)), a_vals, label=f'a, eps={res["eps"]}')
+                plt.plot(range(len(history)), b_vals, label=f'b, eps={res["eps"]}')
+        plt.xlabel("Iterations")
+        plt.ylabel("Interval boundaries")
+        plt.title(f"{method_names[i]} method on {func_name}")
+        plt.legend()
+        plt.grid()
+    plt.tight_layout()
+    plt.show()
+
 
 if __name__ == "__main__":
     # passive = <class()>
@@ -192,6 +211,7 @@ if __name__ == "__main__":
             print_table(results, name, func.__name__)
 
         plot_iters_evals(results_list, method_names, func.__name__)
+        plot_interval_dynamics(results_list, method_names, func.__name__)
 
     x = np.linspace(a, b, 1000)
 
