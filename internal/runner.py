@@ -9,12 +9,14 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from internal.utils.decorators import count_calls
+from internal.utils.helpers import get_short_func_name
 
 
-def _slugify(name: str) -> str:
-    slug = re.sub(r"\s+", "_", name.strip().lower())
-    slug = re.sub(r"[^\w\-\.]+", "_", slug)
-    return slug.strip("_") or "item"
+#
+# def _slugify(name: str) -> str:
+#     slug = re.sub(r"\s+", "_", name.strip().lower())
+#     slug = re.sub(r"[^\w\-\.]+", "_", slug)
+#     return slug.strip("_") or "item"
 
 
 def _save_table_csv(
@@ -24,7 +26,7 @@ def _save_table_csv(
     output_dir: Path,
 ) -> Path:
     output_dir.mkdir(parents=True, exist_ok=True)
-    file_name = f"{_slugify(func_name)}__{_slugify(method_name)}.csv"
+    file_name = f"{get_short_func_name(func_name)}__{method_name.replace(' ', '_')}.csv"
     file_path = output_dir / file_name
 
     with file_path.open("w", newline="", encoding="utf-8") as file:
@@ -247,7 +249,7 @@ def run(
         wrapped_func = count_calls(func)
         results_list: list[list[dict]] = []
         method_names: list[str] = []
-        func_slug = _slugify(func.__name__)
+        func_name = get_short_func_name(func.__name__)
 
         for method_name, method in methods:
             print(f"Запуск {method_name}...")
@@ -265,13 +267,13 @@ def run(
             results_list,
             method_names,
             func.__name__,
-            save_path=(plots_dir / f"{func_slug}__comparison.png") if save_graphs else None,
+            save_path=(plots_dir / f"{func_name}__comparison.png") if save_graphs else None,
         )
         plot_all_interval_dynamics(
             results_list,
             method_names,
             func.__name__,
-            save_path=(plots_dir / f"{func_slug}__interval_dynamics.png")
+            save_path=(plots_dir / f"{func_name}__interval_dynamics.png")
             if save_graphs
             else None,
         )

@@ -7,7 +7,9 @@ from .multimodal import f3
 
 __all__ = [
     "PlateauFunction",
+    # "PlateauFunction",
     "AsymmetricValleyFunction",
+    # "AsymmetricValleyFunction",
     "f1",
     "f3",
 ]
