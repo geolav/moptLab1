@@ -1,5 +1,4 @@
-import functools
-from typing import Callable, Any
+from typing import Callable
 
 
 class FunctionCallCounter:

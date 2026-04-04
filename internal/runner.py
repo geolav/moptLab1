@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import csv
-import re
 from pathlib import Path
 from typing import Callable, Sequence
 
@@ -10,13 +9,6 @@ import numpy as np
 
 from internal.utils.decorators import count_calls
 from internal.utils.helpers import get_short_func_name
-
-
-#
-# def _slugify(name: str) -> str:
-#     slug = re.sub(r"\s+", "_", name.strip().lower())
-#     slug = re.sub(r"[^\w\-\.]+", "_", slug)
-#     return slug.strip("_") or "item"
 
 
 def _save_table_csv(
