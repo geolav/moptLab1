@@ -2,7 +2,7 @@ import numpy as np
 from typing import Callable, Optional, Tuple
 
 from internal.optimizers.base import BaseOptimizer, OptimisationResult
-from internal.utils.decorators import validate_interval, count_calls
+from internal.utils.decorators import count_calls
 
 
 class ParabolaOptimizer(BaseOptimizer):
@@ -24,7 +24,6 @@ class ParabolaOptimizer(BaseOptimizer):
 
         return x_new
 
-    @validate_interval
     def optimize(
         self, func: Callable[[float], float], a: float, b: float, epsilon: float, **kwargs
     ) -> OptimisationResult:

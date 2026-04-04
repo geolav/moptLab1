@@ -1,4 +1,5 @@
-from .decorators import count_calls, validate_interval, FunctionCallCounter
+# from .decorators import count_calls, validate_interval, FunctionCallCounter
+from .decorators import count_calls, FunctionCallCounter
 from .visualization import (
     plot_function,
     plot_convergence,
@@ -9,7 +10,7 @@ from .visualization import (
 
 __all__ = [
     "count_calls",
-    "validate_interval",
+    # "validate_interval",
     "FunctionCallCounter",
     "plot_function",
     "plot_convergence",

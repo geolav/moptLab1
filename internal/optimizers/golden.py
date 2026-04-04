@@ -2,7 +2,7 @@ import numpy as np
 from typing import Callable
 
 from internal.optimizers.base import BaseOptimizer, OptimisationResult
-from internal.utils.decorators import validate_interval, count_calls
+from internal.utils.decorators import count_calls
 
 PHI = (np.sqrt(5) - 1) / 2
 
@@ -12,7 +12,6 @@ class GoldenSectionOptimizer(BaseOptimizer):
         super().__init__(name="Golden Section")
         self.max_iterations = max_iterations
 
-    @validate_interval
     def optimize(
         self, func: Callable[[float], float], a: float, b: float, epsilon: float, **kwargs
     ) -> OptimisationResult:

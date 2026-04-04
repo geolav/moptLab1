@@ -152,31 +152,3 @@ def create_results_table(results: List[Dict], method_name: str, func_name: str) 
 
     lines.append("=" * 80)
     return "\n".join(lines)
-
-
-def visualize_all_results(
-    results_dict: Dict[str, Dict[str, List[Dict]]], output_dir: str = "results"
-):
-    import os
-
-    os.makedirs(output_dir, exist_ok=True)
-
-    for method_name, func_results in results_dict.items():
-        for func_name, results in func_results.items():
-            plot_convergence(
-                results,
-                method_name,
-                func_name,
-                save_path=f"{output_dir}/{method_name}_{func_name}_convergence.png",
-            )
-            plt.close()
-
-            if results and "history" in results[0]:
-                history = results[0]["history"]
-                plot_interval_dynamics(
-                    history,
-                    method_name,
-                    func_name,
-                    save_path=f"{output_dir}/{method_name}_{func_name}_intervals.png",
-                )
-                plt.close()

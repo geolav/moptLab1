@@ -2,14 +2,13 @@ import numpy as np
 from typing import Callable
 
 from internal.optimizers.base import BaseOptimizer, OptimisationResult
-from internal.utils.decorators import validate_interval, count_calls
+from internal.utils.decorators import count_calls
 
 
 class PassiveSearchOptimizer(BaseOptimizer):
     def __init__(self):
         super().__init__(name="Passive Search")
 
-    @validate_interval
     def optimize(
         self, func: Callable[[float], float], a: float, b: float, epsilon: float, **kwargs
     ) -> OptimisationResult:

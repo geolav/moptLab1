@@ -3,7 +3,6 @@ from typing import Callable
 from scipy.optimize import minimize_scalar
 
 from internal.optimizers.base import BaseOptimizer, OptimisationResult
-from internal.utils.decorators import validate_interval
 
 
 class BrentOptimizer(BaseOptimizer):
@@ -11,7 +10,6 @@ class BrentOptimizer(BaseOptimizer):
         super().__init__(name="Brent")
         self.max_iterations = max_iterations
 
-    @validate_interval
     def optimize(
         self, func: Callable[[float], float], a: float, b: float, epsilon: float, **kwargs
     ) -> OptimisationResult:
