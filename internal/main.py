@@ -15,10 +15,10 @@ def main() -> None:
     a, b = -2.0, 5.0
 
     plateau = PlateauFunction(x_min=1.0, delta=0.8)
-    plateau.__name__ = "PlateauFunction(x_min=1.0, δ=0.2)"
+    plateau.__name__ = "PlateauFunction(x_min=1.0, δ=0.8)"
 
     asymmetric = AsymmetricValleyFunction(x_min=4.0, a=3.0, b=0.0)
-    asymmetric.__name__ = "AsymmetricValley(x_min=-0.5, a=-7.0)"
+    asymmetric.__name__ = "AsymmetricValley(x_min=4.0, a=-3.0, b=0.0)"
 
     functions = [f1, f3, plateau, asymmetric]
     methods = [
