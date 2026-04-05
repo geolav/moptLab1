@@ -1,12 +1,7 @@
-from internal.functions.multimodal import f3
-from internal.functions.unimodal import AsymmetricValleyFunction, PlateauFunction
-from internal.functions.good_unimodal import f1
-from internal.optimizers.dichotomy import DichotomyOptimizer
-from internal.optimizers.fibonacci import FibonacciOptimizer
-from internal.optimizers.golden import GoldenSectionOptimizer
-from internal.optimizers.parabola import ParabolaOptimizer
-from internal.optimizers.passive import PassiveSearchOptimizer
-from internal.optimizers.brent import BrentOptimizer
+from internal.functions import f3, f1, AsymmetricValleyFunction, PlateauFunction
+from internal.optimizers import (DichotomyOptimizer, FibonacciOptimizer,
+                                 GoldenSectionOptimizer, ParabolaOptimizer,
+                                 PassiveSearchOptimizer, BrentOptimizer)
 from internal.runner import run
 
 
@@ -18,7 +13,7 @@ def main() -> None:
     plateau.__name__ = "PlateauFunction(x_min=1.0, δ=0.8)"
 
     asymmetric = AsymmetricValleyFunction(x_min=4.0, a=3.0, b=0.0)
-    asymmetric.__name__ = "AsymmetricValley(x_min=4.0, a=-3.0, b=0.0)"
+    asymmetric.__name__ = "AsymmetricValley(x_min=4.0, a=3.0, b=0.0)"
 
     functions = [f1, f3, plateau, asymmetric]
     methods = [
