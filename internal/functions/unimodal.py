@@ -36,15 +36,12 @@ class PlateauFunction:
 
 class AsymmetricValleyFunction:
     def __init__(self, x_min: float = 4.0, a: float = 10.0, b: float = 0.0):
-        # Теперь параметр 'a' мы используем как степень функции (например, 10)
         self.x_min = x_min
         self.degree = int(a)
         self.b = b
-        # Имя для графиков
         self.__name__ = f"TrapFunction(x_min={x_min}, degree={self.degree})"
 
     def __call__(self, x: float) -> float:
-        # Чем выше степень, тем сложнее методу парабол найти вершину
         return abs(x - self.x_min)**self.degree + self.b
 
     def global_minimum(self) -> tuple[float, float]:
