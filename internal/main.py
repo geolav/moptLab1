@@ -46,11 +46,11 @@ def main() -> None:
     passive = PassiveSearchOptimizer()
 
     #БЕЗ РАЗВЕДКИ
-    res_no_search = golden.optimize(f3, a, b, eps)
+    res_passive_no_scout = golden.optimize(f3, a, b, eps)
 
     #С РАЗВЕДКОЙ
-    res_passive = passive.optimize(f3, a, b, eps, n_points=1000)
-    x0 = res_passive.x_opt
+    res_passive_with_scout = passive.optimize(f3, a, b, eps, n_points=1000)
+    x0 = res_passive_with_scout.x_opt
 
     delta = 0.5
     a_new = max(a, x0 - delta)
@@ -59,7 +59,7 @@ def main() -> None:
     res_with_search = golden.optimize(f3, a_new, b_new, eps)
 
     print("\nБез разведки:")
-    print(f"x* = {res_no_search.x_opt}, f(x*) = {res_no_search.f_opt}")
+    print(f"x* = {res_passive_no_scout.x_opt}, f(x*) = {res_passive_no_scout.f_opt}")
 
     print("\nС разведкой:")
     print(f"x* = {res_with_search.x_opt}, f(x*) = {res_with_search.f_opt}")
