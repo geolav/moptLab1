@@ -1,0 +1,234 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[russian]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{geometry}
+\geometry{margin=2cm}
+
+\title{Лабораторная работа №1\\Методы одномерного поиска}
+\author{Георгий Лаврентьев, Дмитрий Коваль}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Постановка задачи}
+В работе реализованы и сравнены методы одномерной минимизации:
+\begin{itemize}
+    \item пассивный поиск;
+    \item дихотомия;
+    \item золотое сечение;
+    \item Фибоначчи;
+    \item параболы;
+    \item библиотечный метод Брента (\texttt{minimize\_scalar(..., method='brent')}).
+\end{itemize}
+
+Исследованы 4 функции:
+\begin{itemize}
+    \item $f_1(x)=(x-2)^2+1$ --- ``хорошая'' унимодальная;
+    \item $f_{2.1}(x)=\begin{cases}
+        \delta^2,& |x-x_{\min}|\le \delta\\
+        (x-x_{\min})^2,& \text{иначе}
+    \end{cases}$, где $x_{\min}=1$, $\delta=0.8$ (плато);
+    \item $f_{2.2}(x)=|x-4|^{10}$ (сильная асимметрия кривизны);
+    \item $f_3(x)=(x-1.5)^2+\sin(5x)$ --- многомодальная.
+\end{itemize}
+
+Диапазон точностей: $\varepsilon \in \{10^{-1}, 10^{-2}, \dots, 10^{-8}\}$, рабочий интервал $[-2, 5]$.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{results/plots/all_functions.png}
+\caption{Графики всех исследуемых функций}
+\end{figure}
+
+\section{Организация эксперимента}
+Для каждой унимодальной функции и каждого метода собирались:
+\begin{itemize}
+    \item число итераций;
+    \item число вычислений функции;
+    \item история сужения интервала неопределённости.
+\end{itemize}
+
+Полные таблицы по всем $\varepsilon$ автоматически сохранены в \texttt{results/tables/*.csv}.
+Ниже приведены компактные сводки для $\varepsilon=10^{-8}$ и графики зависимостей.
+
+\section{Результаты: унимодальные функции}
+
+\subsection{$f_1(x)=(x-2)^2+1$}
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{lrrrr}
+\toprule
+Метод & Итерации & Вычисления & $x^*$ & $f(x^*)$ \\
+\midrule
+Пассивный поиск & 1 & 100000 & 1.999980000 & 1.0000000004 \\
+Дихотомия & 29 & 59 & 1.999999989 & 1.0000000000 \\
+Золотое сечение & 43 & 45 & 2.000000010 & 1.0000000000 \\
+Фибоначчи & 42 & 46 & 1.999999995 & 1.0000000000 \\
+Парабола & 3 & 5 & 2.000000000 & 1.0000000000 \\
+Брент (SciPy) & 5 & 8 & 2.000000000 & 1.0000000000 \\
+\bottomrule
+\end{tabular}
+\caption{Сравнение методов на $f_1$ при $\varepsilon=10^{-8}$}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{results/plots/func_1__comparison.png}
+\caption{Зависимость числа итераций/вычислений от точности для $f_1$}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{results/plots/func_1__interval_dynamics.png}
+\caption{Динамика интервала неопределённости для $f_1$}
+\end{figure}
+
+\textbf{Краткий вывод:} на гладкой квадратичной функции парабола и Брент дают минимальные затраты; пассивный поиск самый дорогой по числу вычислений.
+
+\subsection{$f_{2.1}$: функция с плато}
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{lrrrr}
+\toprule
+Метод & Итерации & Вычисления & $x^*$ & $f(x^*)$ \\
+\midrule
+Пассивный поиск & 1 & 100000 & 0.200052001 & 0.6400000000 \\
+Дихотомия & 29 & 59 & 0.200000007 & 0.6400000000 \\
+Золотое сечение & 43 & 45 & 1.799999999 & 0.6400000000 \\
+Фибоначчи & 42 & 46 & 0.200000005 & 0.6400000000 \\
+Парабола & 45 & 47 & 1.500000000 & 0.6400000000 \\
+Брент (SciPy) & 37 & 40 & 0.856888666 & 0.6400000000 \\
+\bottomrule
+\end{tabular}
+\caption{Сравнение методов на $f_{2.1}$ при $\varepsilon=10^{-8}$}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{results/plots/func_2.1__comparison.png}
+\caption{Зависимость числа итераций/вычислений от точности для $f_{2.1}$}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{results/plots/func_2.1__interval_dynamics.png}
+\caption{Динамика интервала неопределённости для $f_{2.1}$}
+\end{figure}
+
+\textbf{Краткий вывод:} из-за плато минимум не единственный, поэтому разные методы сходятся к разным точкам с одинаковым значением $f=0.64$.
+
+\subsection{$f_{2.2}(x)=|x-4|^{10}$: асимметричная унимодальная}
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{lrrrr}
+\toprule
+Метод & Итерации & Вычисления & $x^*$ & $f(x^*)$ \\
+\midrule
+Пассивный поиск & 1 & 100000 & 3.999970000 & $5.91\cdot 10^{-46}$ \\
+Дихотомия & 29 & 59 & 3.999999999 & $2.07\cdot 10^{-91}$ \\
+Золотое сечение & 43 & 45 & 4.000000000 & $4.85\cdot 10^{-101}$ \\
+Фибоначчи & 42 & 46 & 4.000000004 & $4.53\cdot 10^{-85}$ \\
+Парабола & 7 & 10 & 3.978756335 & $1.87\cdot 10^{-17}$ \\
+Брент (SciPy) & 25 & 28 & 4.000000002 & $5.96\cdot 10^{-87}$ \\
+\bottomrule
+\end{tabular}
+\caption{Сравнение методов на $f_{2.2}$ при $\varepsilon=10^{-8}$}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{results/plots/func_2.2__comparison.png}
+\caption{Зависимость числа итераций/вычислений от точности для $f_{2.2}$}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{results/plots/func_2.2__interval_dynamics.png}
+\caption{Динамика интервала неопределённости для $f_{2.2}$}
+\end{figure}
+
+\textbf{Краткий вывод:} метод парабол на этой функции существенно проигрывает по качеству решения, тогда как интервальные методы и Брент устойчиво находят минимум возле $x=4$.
+
+\section{Многомодальная функция и разведка}
+Для $f_3(x)=(x-1.5)^2+\sin(5x)$ получены следующие результаты при $\varepsilon=10^{-8}$:
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{lrrrr}
+\toprule
+Метод & Итерации & Вычисления & $x^*$ & $f(x^*)$ \\
+\midrule
+Пассивный поиск & 1 & 100000 & 0.984059841 & $-0.7122701655$ \\
+Дихотомия & 29 & 59 & 0.984052380 & $-0.7122701662$ \\
+Золотое сечение & 43 & 45 & 2.146777366 & $-0.5476338287$ \\
+Фибоначчи & 42 & 46 & 2.146777366 & $-0.5476338287$ \\
+Парабола & 13 & 15 & 0.984052374 & $-0.7122701662$ \\
+Брент (SciPy) & 13 & 16 & 2.146777364 & $-0.5476338287$ \\
+\bottomrule
+\end{tabular}
+\caption{Сравнение методов на $f_3$ при $\varepsilon=10^{-8}$}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{results/plots/func_3__comparison.png}
+\caption{Зависимость числа итераций/вычислений от точности для $f_3$}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{results/plots/func_3__interval_dynamics.png}
+\caption{Динамика интервала неопределённости для $f_3$}
+\end{figure}
+
+Отдельно выполнено сравнение золотого сечения с/без разведки:
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{lrr}
+\toprule
+Сценарий & $x^*$ & $f(x^*)$ \\
+\midrule
+Без разведки (golden на $[-2,5]$) & 2.146776303 & $-0.5476338287$ \\
+С разведкой (passive $\rightarrow$ golden) & 0.984052388 & $-0.7122701662$ \\
+\bottomrule
+\end{tabular}
+\caption{Влияние разведки на результат для $f_3$}
+\end{table}
+
+Разведка пассивным поиском (1000 точек) дала стартовый интервал
+\[
+[0.484985,\; 1.484985],
+\]
+что позволило активному методу выйти к более глубокому минимуму.
+
+\section{Сравнение с библиотечным методом Брента}
+\begin{itemize}
+    \item На гладкой унимодальной $f_1$ библиотечный Брент и метод парабол дают лучшие затраты.
+    \item На функции с плато $f_{2.1}$ Брент корректен, но выбор точки минимума не уникален (плато).
+    \item На асимметричной $f_{2.2}$ Брент устойчив и точен; метод парабол заметно хуже по качеству минимума.
+    \item На многомодальной $f_3$ Брент без разведки может прийти в локальный минимум, поэтому разведка критична.
+\end{itemize}
+
+\section{Выводы}
+\begin{enumerate}
+    \item Все требуемые методы реализованы и протестированы на заданных типах функций.
+    \item Для унимодальных функций построены таблицы зависимости от $\varepsilon$, графики сравнения и графики динамики интервала.
+    \item Пассивный поиск полезен как разведочный инструмент, но дорог по числу вычислений.
+    \item На сложных функциях надёжнее всего работают интервальные методы и Брент; параболы чувствительны к форме функции.
+    \item Для многомодальной задачи комбинация ``разведка + активный метод'' даёт существенно лучший минимум, чем запуск активного метода без разведки.
+\end{enumerate}
+
+\end{document}
