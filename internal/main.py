@@ -45,10 +45,8 @@ def main() -> None:
     golden = GoldenSectionOptimizer()
     passive = PassiveSearchOptimizer()
 
-    #БЕЗ РАЗВЕДКИ
     res_passive_no_scout = golden.optimize(f3, a, b, eps)
 
-    #С РАЗВЕДКОЙ
     res_passive_with_scout = passive.optimize(f3, a, b, eps, n_points=1000)
     x0 = res_passive_with_scout.x_opt
 
