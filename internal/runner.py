@@ -1,17 +1,21 @@
 from __future__ import annotations
-
 from pathlib import Path
 from typing import Callable, Sequence
-
-from internal.utils.decorators import count_calls
+from internal.utils.decorators import CountedFunction, ensure_counted
+from internal.optimizers.base import BaseOptimizer
 from internal.utils.helpers import get_short_func_name
-from internal.utils.visualization import plot_functions, print_table, _save_table_csv, plot_methods_comparison, \
-    plot_all_interval_dynamics
+from internal.utils.visualization import (
+    plot_functions,
+    print_table,
+    save_table_csv,
+    plot_methods_comparison,
+    plot_all_interval_dynamics,
+)
 
 
 def run_optimizer(
-    optimizer: object,
-    func: Callable[[float], float],
+    optimizer: BaseOptimizer,
+    func: CountedFunction,
     a: float,
     b: float,
     epsilons: Sequence[float],
@@ -35,7 +39,7 @@ def run_optimizer(
 
 def run(
     functions: list[Callable[[float], float]],
-    methods: list[tuple[str, object]],
+    methods: list[BaseOptimizer],
     a: float,
     b: float,
     epsilons: Sequence[float],
@@ -60,12 +64,13 @@ def run(
         print(f" Тестирование на функции: {func.__name__} ".center(80))
         print(f"{'#' * 80}\n")
 
-        wrapped_func = count_calls(func)
+        wrapped_func = ensure_counted(func)
         results_list: list[list[dict]] = []
         method_names: list[str] = []
         func_name = get_short_func_name(func.__name__)
 
-        for method_name, method in methods:
+        for method in methods:
+            method_name = method.name
             print(f"Запуск {method_name}...")
             results = run_optimizer(method, wrapped_func, a, b, epsilons)
             results_list.append(results)
@@ -73,7 +78,9 @@ def run(
             print_table(results, method_name, func.__name__)
 
             if save_tables:
-                table_path = _save_table_csv(results, method_name, func.__name__, tables_dir)
+                table_path = save_table_csv(
+                    results, method_name, func.__name__, tables_dir
+                )
                 print(f"Сохранена таблица: {table_path}")
 
         print(f"Построение сравнительных графиков для {func.__name__}...")
@@ -81,7 +88,9 @@ def run(
             results_list,
             method_names,
             func.__name__,
-            save_path=(plots_dir / f"{func_name}__comparison.png") if save_graphs else None,
+            save_path=(plots_dir / f"{func_name}__comparison.png")
+            if save_graphs
+            else None,
         )
         plot_all_interval_dynamics(
             results_list,

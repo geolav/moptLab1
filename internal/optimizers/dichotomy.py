@@ -1,14 +1,19 @@
 from typing import Callable
 
-from internal.optimizers.base import OptimisationResult
+from internal.optimizers.base import BaseOptimizer, OptimisationResult
 
 
-class DichotomyOptimizer:
-
-    name = "Дихотомия"
+class DichotomyOptimizer(BaseOptimizer):
+    def __init__(self) -> None:
+        super().__init__(name="Дихотомия")
 
     def optimize(
-            self, func: Callable[[float], float], a: float, b: float, epsilon: float
+        self,
+        func: Callable[[float], float],
+        a: float,
+        b: float,
+        epsilon: float,
+        **kwargs,
     ) -> OptimisationResult:
         delta = epsilon / 2
         n_iterations = 0

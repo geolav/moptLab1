@@ -1,7 +1,12 @@
 from internal.functions import f3, f1, AsymmetricValleyFunction, PlateauFunction
-from internal.optimizers import (DichotomyOptimizer, FibonacciOptimizer,
-                                 GoldenSectionOptimizer, ParabolaOptimizer,
-                                 PassiveSearchOptimizer, BrentOptimizer)
+from internal.optimizers import (
+    DichotomyOptimizer,
+    FibonacciOptimizer,
+    GoldenSectionOptimizer,
+    ParabolaOptimizer,
+    PassiveSearchOptimizer,
+    BrentOptimizer,
+)
 from internal.runner import run
 
 
@@ -17,12 +22,12 @@ def main() -> None:
 
     functions = [f1, f3, plateau, asymmetric]
     methods = [
-        ("Пассивный поиск", PassiveSearchOptimizer()),
-        ("Дихотомия", DichotomyOptimizer()),
-        ("Золотое сечение", GoldenSectionOptimizer()),
-        ("Фибоначчи", FibonacciOptimizer()),
-        ("Парабола", ParabolaOptimizer()),
-        ("Брент (SciPy)", BrentOptimizer()),
+        PassiveSearchOptimizer(),
+        DichotomyOptimizer(),
+        GoldenSectionOptimizer(),
+        FibonacciOptimizer(),
+        ParabolaOptimizer(),
+        BrentOptimizer(),
     ]
 
     run(

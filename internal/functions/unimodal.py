@@ -1,5 +1,4 @@
 class PlateauFunction:
-
     def __init__(self, x_min: float = 0.0, delta: float = 0.1):
         self.x_min = x_min
         self.delta = delta
@@ -15,6 +14,7 @@ class PlateauFunction:
     def global_minimum(self) -> tuple[float, float]:
         return self.x_min, self.delta**2
 
+
 class AsymmetricValleyFunction:
     def __init__(self, x_min: float = 4.0, a: float = 10.0, b: float = 0.0):
         self.x_min = x_min
@@ -23,7 +23,7 @@ class AsymmetricValleyFunction:
         self.__name__ = f"AsymmetricValleyFunction(x_min={x_min}, degree={self.degree})"
 
     def __call__(self, x: float) -> float:
-        return abs(x - self.x_min)**self.degree + self.b
+        return abs(x - self.x_min) ** self.degree + self.b
 
     def global_minimum(self) -> tuple[float, float]:
         return self.x_min, self.b

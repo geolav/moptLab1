@@ -1,20 +1,25 @@
 from typing import Callable
+from internal.optimizers.base import BaseOptimizer, OptimisationResult
 
-from internal.optimizers.base import OptimisationResult
 
+class FibonacciOptimizer(BaseOptimizer):
+    def __init__(self) -> None:
+        super().__init__(name="Фибоначчи")
 
-class FibonacciOptimizer:
-
-    name = "Фибоначчи"
-
-    def fib(self, n: int) -> int:
+    @staticmethod
+    def fib(n: int) -> int:
         a, b = 1, 1
         for _ in range(n - 1):
             a, b = b, a + b
         return a
 
     def optimize(
-        self, func: Callable[[float], float], a: float, b: float, epsilon: float
+        self,
+        func: Callable[[float], float],
+        a: float,
+        b: float,
+        epsilon: float,
+        **kwargs,
     ) -> OptimisationResult:
         n = 1
         while self.fib(n) < (b - a) / epsilon:
@@ -47,7 +52,7 @@ class FibonacciOptimizer:
                 lam = a + (self.fib(n - k) / self.fib(n - k + 2)) * (b - a)
                 f_lam = func(lam)
 
-        mu = lam + epsilon
+        mu = min(lam + epsilon, b)
         f_mu = func(mu)
         if f_lam > f_mu:
             a = lam
@@ -62,4 +67,3 @@ class FibonacciOptimizer:
             n_evaluations=getattr(func, "calls", 0),
             interval_history=interval_history,
         )
-

@@ -1,16 +1,20 @@
 import numpy as np
 from typing import Callable
-
 from internal.optimizers.base import BaseOptimizer, OptimisationResult
-from internal.utils.decorators import count_calls
+from internal.utils.decorators import ensure_counted
 
 
 class PassiveSearchOptimizer(BaseOptimizer):
     def __init__(self):
-        super().__init__(name="Passive Search")
+        super().__init__(name="Пассивный поиск")
 
     def optimize(
-        self, func: Callable[[float], float], a: float, b: float, epsilon: float, **kwargs
+        self,
+        func: Callable[[float], float],
+        a: float,
+        b: float,
+        epsilon: float,
+        **kwargs,
     ) -> OptimisationResult:
         n_points = kwargs.get("n_points", None)
         if n_points is None:
@@ -18,13 +22,9 @@ class PassiveSearchOptimizer(BaseOptimizer):
 
         x_values = np.linspace(a, b, n_points)
 
-        if hasattr(func, "calls"):
-            f_values = np.array([func(x) for x in x_values])
-            n_evaluations = func.calls
-        else:
-            wrapped_func = count_calls(func)
-            f_values = np.array([wrapped_func(x) for x in x_values])
-            n_evaluations = wrapped_func.calls
+        counted_func = ensure_counted(func)
+        f_values = np.array([counted_func(x) for x in x_values])
+        n_evaluations = counted_func.calls
 
         min_idx = np.argmin(f_values)
         x_opt = x_values[min_idx]

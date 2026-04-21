@@ -1,8 +1,13 @@
-from typing import Callable
+from typing import Callable, Protocol, Union, cast
+
+
+class CountedFunction(Protocol):
+    calls: int
+
+    def __call__(self, x: float) -> float: ...
 
 
 class FunctionCallCounter:
-
     def __init__(self, func: Callable[[float], float]):
         self.func = func
         self.calls = 0
@@ -19,3 +24,11 @@ class FunctionCallCounter:
 
 def count_calls(func: Callable[[float], float]) -> FunctionCallCounter:
     return FunctionCallCounter(func)
+
+
+def ensure_counted(
+    func: Union[Callable[[float], float], CountedFunction],
+) -> CountedFunction:
+    if hasattr(func, "calls"):
+        return cast(CountedFunction, func)
+    return count_calls(func)

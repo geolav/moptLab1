@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import csv
 
 import numpy as np
@@ -37,8 +39,13 @@ def plot_function(
 
 
 def create_results_table(results: List[Dict], method_name: str, func_name: str) -> str:
-    lines = ["=" * 80, f"  {method_name} на {func_name}", "=" * 80,
-             f"{'ε':>12} | {'x*':>12} | {'f(x*)':>14} | {'Итер':>6} | {'Вычисл':>6}", "-" * 80]
+    lines = [
+        "=" * 80,
+        f"  {method_name} на {func_name}",
+        "=" * 80,
+        f"{'ε':>12} | {'x*':>12} | {'f(x*)':>14} | {'Итер':>6} | {'Вычисл':>6}",
+        "-" * 80,
+    ]
 
     for r in results:
         n_iter = r["n_iterations"] if r["n_iterations"] != -1 else "N/A"
@@ -49,6 +56,7 @@ def create_results_table(results: List[Dict], method_name: str, func_name: str) 
 
     lines.append("=" * 80)
     return "\n".join(lines)
+
 
 def print_table(results: list[dict], method_name: str, func_name: str) -> None:
     print(f"\n{'=' * 80}")
@@ -116,7 +124,9 @@ def plot_all_interval_dynamics(
     n_methods = len(results_list)
     n_cols = min(3, n_methods)
     n_rows = int(np.ceil(n_methods / n_cols))
-    _, axes = plt.subplots(n_rows, n_cols, figsize=(6 * n_cols, 5 * n_rows), squeeze=False)
+    _, axes = plt.subplots(
+        n_rows, n_cols, figsize=(6 * n_cols, 5 * n_rows), squeeze=False
+    )
     flat_axes = axes.ravel()
 
     for idx, (results, method_name) in enumerate(zip(results_list, method_names)):
@@ -140,7 +150,7 @@ def plot_all_interval_dynamics(
                 "o--",
                 markersize=3,
                 alpha=0.7,
-                label=f'a, ε={result["eps"]:.0e}',
+                label=f"a, ε={result['eps']:.0e}",
             )
             ax.plot(
                 iterations,
@@ -148,7 +158,7 @@ def plot_all_interval_dynamics(
                 "s-",
                 markersize=3,
                 alpha=0.7,
-                label=f'b, ε={result["eps"]:.0e}',
+                label=f"b, ε={result['eps']:.0e}",
             )
             has_data = True
 
@@ -159,7 +169,9 @@ def plot_all_interval_dynamics(
         if has_data:
             ax.legend(fontsize=9)
         else:
-            ax.text(0.5, 0.5, "Нет данных", ha="center", va="center", transform=ax.transAxes)
+            ax.text(
+                0.5, 0.5, "Нет данных", ha="center", va="center", transform=ax.transAxes
+            )
 
     for ax in flat_axes[n_methods:]:
         ax.axis("off")
@@ -199,8 +211,7 @@ def plot_functions(
     plt.show()
 
 
-
-def _save_table_csv(
+def save_table_csv(
     results: list[dict],
     method_name: str,
     func_name: str,
