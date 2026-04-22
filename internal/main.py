@@ -1,4 +1,4 @@
-from internal.functions import f3, f1, AsymmetricValleyFunction, PlateauFunction
+from internal.functions import f3, f1, plateau_function, asymmetric_function
 from internal.optimizers import (
     DichotomyOptimizer,
     FibonacciOptimizer,
@@ -14,13 +14,7 @@ def main() -> None:
     epsilons = [10 ** (-i) for i in range(1, 9)]
     a, b = -2.0, 5.0
 
-    plateau = PlateauFunction(x_min=1.0, delta=0.8)
-    plateau.__name__ = "PlateauFunction(x_min=1.0, δ=0.8)"
-
-    asymmetric = AsymmetricValleyFunction(x_min=4.0, a=10.0, b=0.0)
-    asymmetric.__name__ = "AsymmetricValley(x_min=4.0, a=10.0, b=0.0)"
-
-    functions = [f1, f3, plateau, asymmetric]
+    functions = [f1, f3, plateau_function, asymmetric_function]
     methods = [
         PassiveSearchOptimizer(),
         DichotomyOptimizer(),

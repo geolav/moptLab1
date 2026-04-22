@@ -1,29 +1,19 @@
-class PlateauFunction:
-    def __init__(self, x_min: float = 0.0, delta: float = 0.1):
-        self.x_min = x_min
-        self.delta = delta
-        self.__name__ = f"PlateauFunction(x_min={x_min}, δ={delta})"
-
-    def __call__(self, x: float) -> float:
-        x_shifted = x - self.x_min
-        if abs(x_shifted) <= self.delta:
-            return self.delta**2
-        else:
-            return x_shifted**2
-
-    def global_minimum(self) -> tuple[float, float]:
-        return self.x_min, self.delta**2
+def plateau_function(x: float) -> float:
+    x_min = 1.0
+    delta = 0.8
+    x_shifted = x - x_min
+    if abs(x_shifted) <= delta:
+        return delta**2
+    return x_shifted**2
 
 
-class AsymmetricValleyFunction:
-    def __init__(self, x_min: float = 4.0, a: float = 10.0, b: float = 0.0):
-        self.x_min = x_min
-        self.degree = int(a)
-        self.b = b
-        self.__name__ = f"AsymmetricValleyFunction(x_min={x_min}, degree={self.degree})"
+plateau_function.__name__ = "plateau_function"
 
-    def __call__(self, x: float) -> float:
-        return abs(x - self.x_min) ** self.degree + self.b
 
-    def global_minimum(self) -> tuple[float, float]:
-        return self.x_min, self.b
+def asymmetric_function(x: float) -> float:
+    if x < 3:
+        return (x - 3) ** 2
+    return (x - 3) ** 4
+
+
+asymmetric_function.__name__ = "asymmetric_function"
