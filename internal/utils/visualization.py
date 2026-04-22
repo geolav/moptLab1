@@ -40,26 +40,6 @@ def plot_function(
     return ax
 
 
-def create_results_table(results: List[Dict], method_name: str, func_name: str) -> str:
-    lines = [
-        "=" * 80,
-        f"  {method_name} на {func_name}",
-        "=" * 80,
-        f"{'ε':>12} | {'x*':>12} | {'f(x*)':>14} | {'Итер':>6} | {'Вычисл':>6}",
-        "-" * 80,
-    ]
-
-    for r in results:
-        n_iter = r["n_iterations"] if r["n_iterations"] != -1 else "N/A"
-        lines.append(
-            f"{r['eps']:>12.1e} | {r['x_opt']:>12.8f} | {r['f_opt']:>14.10e} | "
-            f"{str(n_iter):>6} | {r['n_evaluations']:>6}"
-        )
-
-    lines.append("=" * 80)
-    return "\n".join(lines)
-
-
 def print_table(results: list[dict], method_name: str, func_name: str) -> None:
     print(f"\n{'=' * 80}")
     print(f"  {method_name} | {func_name}")

@@ -6,7 +6,6 @@ from .decorators import (
 )
 from .visualization import (
     plot_function,
-    create_results_table,
 )
 
 __all__ = [
@@ -15,5 +14,4 @@ __all__ = [
     "ensure_counted",
     "FunctionCallCounter",
     "plot_function",
-    "create_results_table",
 ]
