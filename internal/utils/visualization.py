@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import sys
+
 import csv
 
 import numpy as np
@@ -62,13 +64,13 @@ def print_table(results: list[dict], method_name: str, func_name: str) -> None:
     print(f"\n{'=' * 80}")
     print(f"  {method_name} | {func_name}")
     print(f"{'=' * 80}")
-    print(f"{'eps':>12} | {'x*':>12} | {'f(x*)':>14} | {'итер.':>6} | {'вычисл.':>8}")
+    print(f"{'eps':>12} | {'x*':>16} | {'f(x*)':>16} | {'итер.':>6} | {'вычисл.':>8}")
     print(f"{'-' * 80}")
 
     for result in results:
         n_iterations = result["n_iterations"] if result["n_iterations"] != -1 else "N/A"
         print(
-            f"{result['eps']:>12.1e} | {result['x_opt']:>12.8f} | "
+            f"{result['eps']:>12.1e} | {result['x_opt']:>12.14f} | "
             f"{result['f_opt']:>14.10e} | {str(n_iterations):>6} | "
             f"{result['n_evaluations']:>8}"
         )
