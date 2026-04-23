@@ -4,14 +4,10 @@ from .decorators import (
     count_calls,
     ensure_counted,
 )
-from .visualization import (
-    plot_function,
-)
 
 __all__ = [
     "CountedFunction",
     "count_calls",
     "ensure_counted",
     "FunctionCallCounter",
-    "plot_function",
 ]

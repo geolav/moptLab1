@@ -15,31 +15,6 @@ sns.set_style("whitegrid")
 sns.set_palette("husl")
 
 
-def plot_function(
-    func: Callable[[float], float],
-    a: float,
-    b: float,
-    n_points: int = 1000,
-    ax: Optional[plt.Axes] = None,
-    label: Optional[str] = None,
-) -> plt.Axes:
-    if ax is None:
-        fig, ax = plt.subplots(figsize=(10, 6))
-
-    x = np.linspace(a, b, n_points)
-    y = np.array([func(xi) for xi in x])
-
-    func_name = label or getattr(func, "__name__", "f(x)")
-    ax.plot(x, y, linewidth=2, label=func_name)
-    ax.set_xlabel("x", fontsize=12)
-    ax.set_ylabel("f(x)", fontsize=12)
-    ax.set_title(f"Функция: {func_name}", fontsize=14)
-    ax.legend()
-    ax.grid(True, alpha=0.3)
-
-    return ax
-
-
 def print_table(results: list[dict], method_name: str, func_name: str) -> None:
     print(f"\n{'=' * 80}")
     print(f"  {method_name} | {func_name}")
