@@ -1,13 +1,11 @@
 from __future__ import annotations
 
-import sys
-
 import csv
 
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-from typing import List, Dict, Callable, Optional
+from typing import Callable
 from internal.utils.helpers import get_short_func_name
 from pathlib import Path
 

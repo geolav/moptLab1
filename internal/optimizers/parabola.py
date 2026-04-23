@@ -26,10 +26,6 @@ class ParabolaOptimizer(BaseOptimizer):
         f2 = counted_func(x2)
         f3 = counted_func(x3)
 
-        if not (f1 > f2 and f2 < f3):
-            x2 = (x1 + x3) / 2
-            f2 = counted_func(x2)
-
         interval_history = [(x1, x3)]
         n_iterations = 0
 

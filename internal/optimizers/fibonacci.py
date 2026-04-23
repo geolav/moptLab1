@@ -7,11 +7,12 @@ class FibonacciOptimizer(BaseOptimizer):
         super().__init__(name="Фибоначчи")
 
     @staticmethod
-    def fib(n: int) -> int:
-        a, b = 1, 1
-        for _ in range(n - 1):
-            a, b = b, a + b
-        return a
+    def build_fib_sequence(limit: float) -> list[int]:
+        fib_numbers = [0, 1, 1]
+        while fib_numbers[-1] < limit:
+            fib_numbers.append(fib_numbers[-1] + fib_numbers[-2])
+        fib_numbers.append(fib_numbers[-1] + fib_numbers[-2])
+        return fib_numbers
 
     def optimize(
         self,
@@ -21,15 +22,14 @@ class FibonacciOptimizer(BaseOptimizer):
         epsilon: float,
         **kwargs,
     ) -> OptimisationResult:
-        n = 1
-        while self.fib(n) < (b - a) / epsilon:
-            n += 1
+        fib_numbers = self.build_fib_sequence((b - a) / epsilon)
+        n = len(fib_numbers) - 2
 
         n_iterations = 0
         interval_history: list[tuple[float, float]] = []
         k = 1
-        lam = a + (self.fib(n - k) / self.fib(n - k + 2)) * (b - a)
-        mu = a + (self.fib(n - k + 1) / self.fib(n - k + 2)) * (b - a)
+        lam = a + (fib_numbers[n - k] / fib_numbers[n - k + 2]) * (b - a)
+        mu = a + (fib_numbers[n - k + 1] / fib_numbers[n - k + 2]) * (b - a)
         f_lam = func(lam)
         f_mu = func(mu)
 
@@ -42,14 +42,14 @@ class FibonacciOptimizer(BaseOptimizer):
                 lam = mu
                 f_lam = f_mu
                 k += 1
-                mu = a + (self.fib(n - k + 1) / self.fib(n - k + 2)) * (b - a)
+                mu = a + (fib_numbers[n - k + 1] / fib_numbers[n - k + 2]) * (b - a)
                 f_mu = func(mu)
             else:
                 b = mu
                 mu = lam
                 f_mu = f_lam
                 k += 1
-                lam = a + (self.fib(n - k) / self.fib(n - k + 2)) * (b - a)
+                lam = a + (fib_numbers[n - k] / fib_numbers[n - k + 2]) * (b - a)
                 f_lam = func(lam)
 
         mu = min(lam + epsilon, b)
